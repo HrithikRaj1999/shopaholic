@@ -3,20 +3,19 @@ import userModel from "../models/userModel.js"
 import JWT from "jsonwebtoken"
 export const registerController = async (req, res) => {
     try {
-        const { name, email, password, address, phone } = req.body
-        console.log({ name, email, password, address, phone })
-        if (!(name && email && password && address && phone)) {
+        const { name, email, password, address, phone, state, country, zip } = req.body
+        if (!(name && email && password && address && phone && state && country && zip)) {
 
             return res.send({ error: "All Fields is Required" })
         }
         //existing user check
         const existingUser = await userModel.findOne({ email })
         if (existingUser)
-            return res.status(200).send({ message: 'Already Registered Please log in' })
+            return res.status(400).send({ success: false, message: 'Already Registered Please log in' })
         //register user
         const hashedPassword = await hashPassword(password)
         //save
-        const user = await new userModel({ name, email, phone, address, password: hashedPassword }).save()
+        const user = await new userModel({ name, email, address, phone, state, country, zip, password: hashedPassword }).save()
         res.status(200).send({
             success: true,
             message: "User Register Successfully",
@@ -32,8 +31,8 @@ export const registerController = async (req, res) => {
 }
 
 export const loginController = async (req, res) => {
-    const { name, email, password, } = req.body
-    console.log(email);
+    const { email, password, } = req.body
+    console.log(email, password);
     try {
         const user = await userModel.findOne({ email });
         console.log(user);
@@ -46,14 +45,14 @@ export const loginController = async (req, res) => {
         const match = await comparePassword(password, user.password)
         console.log(match)
         if (!match) {
-            return res.status(200).send({
+            return res.status(404).send({
                 success: false,
                 message: "Wrong password"
             })
         }
 
         //token
-        const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
+        const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
         return res.status(200).send({
             success: true,
             message: 'login successfully',

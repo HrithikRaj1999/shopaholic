@@ -24,10 +24,27 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+
+    country: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    zip: {
+        type: String,
+        required: true
+    },
+    billingSame: {
+        type: Boolean,
+        required: false
+    },
     role: {
         type: String,
         default: 'user'
     }
-
 }, { timesStamps: true })
+
 export default mongoose.model('users', userSchema)
