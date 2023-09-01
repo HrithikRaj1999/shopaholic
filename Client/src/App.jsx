@@ -24,6 +24,7 @@ const Register = lazy(() => import("./components/Register"));
 const Login = lazy(() => import("./components/Login"));
 const Logout = lazy(() => import("./components/Logout"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
+const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -91,6 +92,14 @@ const appRouter = createBrowserRouter([
         element: (
           <Suspense fallback={<h1>Loading......</h1>}>
             <Logout />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/forgot-password",
+        element: (
+          <Suspense fallback={<h1>Loading......</h1>}>
+            <ForgotPassword />
           </Suspense>
         ),
       },

@@ -3,7 +3,7 @@ import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/auth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -136,12 +136,12 @@ const Login = () => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <a
-                      href="#"
+                    <Link
                       className="text-sm font-medium text-primary-600 text-cyan-200"
+                      to="/forgot-password"
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                   <div className="inline-flex items-end">
                     <button

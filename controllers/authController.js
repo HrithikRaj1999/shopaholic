@@ -3,8 +3,8 @@ import userModel from "../models/userModel.js"
 import JWT from "jsonwebtoken"
 export const registerController = async (req, res) => {
     try {
-        const { name, email, password, address, phone, state, country, zip } = req.body
-        if (!(name && email && password && address && phone && state && country && zip)) {
+        const { name, email, password, address, phone, state, country, zip, securityAnswer } = req.body
+        if (!(name && email && password && address && phone && state && country && zip && securityAnswer)) {
 
             return res.send({ error: "All Fields is Required" })
         }
@@ -15,7 +15,7 @@ export const registerController = async (req, res) => {
         //register user
         const hashedPassword = await hashPassword(password)
         //save
-        const user = await new userModel({ name, email, address, phone, state, country, zip, password: hashedPassword }).save()
+        const user = await new userModel({ name, email, address, phone, state, country, zip, securityAnswer, password: hashedPassword }).save()
         res.status(200).send({
             success: true,
             message: "User Register Successfully",
@@ -75,7 +75,46 @@ export const loginController = async (req, res) => {
     }
 
 }
-
+export const forgotPasswordController = async (req, res) => {
+    try {
+        const {
+            email,
+            confirmPassword,
+            securityAnswer,
+        } = req.body;
+        if (!(email && confirmPassword && securityAnswer)) {
+            return res.send({ error: "All Fields is Required" })
+        }
+        const existingUser = await userModel.findOne({ email });
+        if (!existingUser) {
+            return res.send({
+                success: false,
+                message: 'User not Found'
+            })
+        }
+        if (existingUser.securityAnswer !== securityAnswer) {
+            return res.send({
+                success: false,
+                message: 'Kuch toh Galat hai'
+            })
+        }
+        const hashedPassword = await hashPassword(confirmPassword)
+        const updatedUser = await userModel.findByIdAndUpdate(existingUser._id, {
+            ...existingUser, password: hashedPassword,
+        })
+        return res.send({
+            success: true,
+            message: "Password Updated successfully",
+            updatedUser
+        })
+    }
+    catch (err) {
+        res.status(500).send({
+            success: false,
+            message: 'Error in Password Changing'
+        })
+    }
+}
 export const testController = async (req, res) => {
     res.status(200).send({ message: "this is a protected Route user can only access when they have JWT token or signed in" })
 }

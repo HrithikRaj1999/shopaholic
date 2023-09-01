@@ -19,7 +19,7 @@ const Layout = ({ children, title, description, keywords, author }) => {
           <Header />
         </div>
         <main className="flex-grow">
-          <ToastContainer />
+          <ToastContainer autoClose="1000" position="bottom-left" />
           {children}
         </main>
         <div className="mt-auto">

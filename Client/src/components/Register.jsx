@@ -13,6 +13,7 @@ const initialValues = {
   country: "India",
   state: "Maharashtra",
   zip: "411021",
+  securityAnswer: "",
   billingSame: false,
 };
 
@@ -124,6 +125,21 @@ const Register = () => {
                               id="password"
                               className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               placeholder="123****"
+                            />
+                          </div>
+                          <div className="md:col-span-3">
+                            <label
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              htmlFor="securityAnswer"
+                            >
+                              Security Question
+                            </label>
+                            <Field
+                              type="text"
+                              name="securityAnswer"
+                              id="securityAnswer"
+                              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                              placeholder="Whats you girlfriend's pet name?"
                             />
                           </div>
                           <div className="md:col-span-2">
