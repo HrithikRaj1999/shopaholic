@@ -17,9 +17,11 @@ router.get('/test', requireSignIn, checkIsAdmin, testController)
 //changing password
 router.post('/forgot-password', forgotPasswordController)
 
-
-//protected Route auth
-
+//check is admin
+router.get('/admin-auth', requireSignIn, checkIsAdmin, (req, res) => {
+    res.status(200).send({ ok: true })
+})
+//check if logged in
 router.get('/user-auth', requireSignIn, (req, res) => {
     res.status(200).send({ ok: true })
 })

@@ -1,24 +1,43 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Spinner from "./Spinner";
+import { useAuth } from "../context/auth";
 
-const RedirectingPage = () => {
-  const [count, setCount] = useState(10);
-
+const RedirectingPage = ({ path = "/login" }) => {
+  const [count, setCount] = useState(5);
+  const [auth] = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  useMemo(() => {
-    setTimeout(() => {
-      setCount(count - 1);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCount((prevCount) => prevCount - 1);
     }, 1000);
-    count === 0 ? navigate("/login", { state: location.pathname }) : null;
-  }, [count]);
-  return (
-    <div className=" bg-slate-200 flex h-screen justify-center items-center">
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []); // Empty dependency array ensures this effect runs only once, similar to componentDidMount
+
+  useEffect(() => {
+    if (count === 0) {
+      navigate(`${path}`, { state: location.pathname });
+    }
+  }, [count, path, location.pathname, navigate]);
+
+  const countView = useMemo(() => {
+    return (
       <p className="text-center text-3xl font-medium p-2">
-        You must log in to Access this page. Redirecting to Login page in{" "}
-        {count} seconds.
+        {auth.user
+          ? `Not Authorized, you don't have admin Rights. Redirecting to home page in ${count} seconds.`
+          : "Kindly, log in to access userDashboard"}
       </p>
+    );
+  }, [count, auth.user]);
+
+  return (
+    <div className="bg-slate-200 flex h-screen justify-center items-center">
+      {countView}
       <Spinner />
     </div>
   );

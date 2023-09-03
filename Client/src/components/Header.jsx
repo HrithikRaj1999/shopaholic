@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { GiShoppingBag } from "react-icons/gi";
 import { useAuth } from "../context/auth";
+import { useState } from "react";
+import Dropdown from "./Dropdown";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   //assigning location variable
@@ -10,6 +12,10 @@ const Header = () => {
   //Javascript split method to get the name of the path in array
   const splitLocation = pathname.split("/");
   const loc = splitLocation[1];
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const toggleDropdown = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
 
   return (
     <div className="flex justify-between shadow-2xl bg-black w-full p-1 ">
@@ -22,12 +28,12 @@ const Header = () => {
         </h1>
       </div>
       <div className="flex items-center text-white ">
-        <ul className="flex p-4 mx-4 text-lg ">
+        <ul className="flex text-lg ">
           <li
             className={
               loc === ""
-                ? "active px-3 underline hover:text-blue-300 "
-                : "px-3 hover:text-blue-300  "
+                ? "active p-2 m-2 w-30 underline hover:text-blue-300 "
+                : "p-2 m-2 w-30  hover:text-blue-300  "
             }
           >
             <Link to="/">Home</Link>
@@ -35,44 +41,58 @@ const Header = () => {
           <li
             className={
               loc === "category"
-                ? "active px-3 underline hover:text-blue-300 "
-                : "px-3 hover:text-blue-300  "
+                ? "active p-2 m-2 w-30 underline hover:text-blue-300 "
+                : "p-2 m-2 w-30 hover:text-blue-300  "
             }
           >
             <Link to="category">Category</Link>
           </li>
-          <li
-            className={
-              loc === "cart"
-                ? "active px-3 underline hover:text-blue-300 "
-                : "px-3 hover:text-blue-300  "
-            }
-          >
-            <Link to="/cart">🛒 Cart (0)</Link>
+          <li className="p-2 m-2 w-30">
+            🛒
+            <Link
+              className={
+                loc === "cart"
+                  ? "active underline hover:text-blue-300 "
+                  : "hover:text-blue-300  "
+              }
+              to="/cart"
+            >
+              <span>Cart (0)</span>
+            </Link>
           </li>
           {auth.user === null ? (
             <li
               className={
                 loc === "register"
-                  ? "active px-3 underline hover:text-blue-300 "
-                  : "px-3 hover:text-blue-300  "
+                  ? "active p-2 m-2 w-30 underline hover:text-blue-300 "
+                  : "p-2 m-2 w-30  hover:text-blue-300  "
               }
             >
               <Link to="/register">Register</Link>
             </li>
           ) : null}
-          <li
-            className={
-              loc === "login"
-                ? "active px-3 underline hover:text-blue-300 "
-                : "px-3 hover:text-blue-300  "
-            }
-          >
+          <li>
             {auth.user === null ? (
-              <Link to="/login">Login</Link>
+              <p
+                className={
+                  loc === "login"
+                    ? "active p-2 m-2 w-30 underline hover:text-blue-300 "
+                    : "p-2 m-2 w-30  hover:text-blue-300  "
+                }
+              >
+                <Link to="/login">Login</Link>
+              </p>
             ) : (
-              <Link to="/logout">Log Out({auth.user.name})</Link>
+              <p
+                onClick={toggleDropdown}
+                className="cursor-pointer text-xl font-semibold p-2 m-2 w-30  hover:text-blue-300"
+              >
+                {auth.user.name} {!isDropdownVisible ? "⬇" : "⬆"}
+              </p>
             )}
+            {isDropdownVisible ? (
+              <Dropdown toggleDropdown={toggleDropdown} />
+            ) : null}
           </li>
         </ul>
       </div>

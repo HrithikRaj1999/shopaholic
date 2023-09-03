@@ -2,9 +2,8 @@ import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
-import { AuthProvider } from "./context/auth";
-import Dashboard from "./components/Dashboard";
-import { ProtectedRoute } from "./components/Routes/Protected";
+import { AuthProvider, useAuth } from "./context/auth";
+import { Protected } from "./components/Routes/Protected";
 
 const App = () => {
   return (
@@ -23,8 +22,20 @@ const Category = lazy(() => import("./components/Category"));
 const Register = lazy(() => import("./components/Register"));
 const Login = lazy(() => import("./components/Login"));
 const Logout = lazy(() => import("./components/Logout"));
-const Dashboard = lazy(() => import("./components/Dashboard"));
+const UserDashboard = lazy(() =>
+  import("./components/Dashboard/UserDashboard")
+);
 const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
+const AdminDashboard = lazy(() =>
+  import("./components/Dashboard/AdminDashboard")
+);
+const Protected = lazy(() => import("./components/Routes/Protected"));
+const CreateCategory = lazy(() => import("./components/Admin/createCategory"));
+const CreateProduct = lazy(() => import("./components/Admin/createProduct"));
+const Users = lazy(() => import("./components/Admin/Users"));
+
+const Profile = lazy(() => import("./components/User/Profile"));
+const Orders = lazy(() => import("./components/User/Orders"));
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -104,14 +115,79 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard",
-        element: <ProtectedRoute />,
+        path: "/userDashboard",
+        element: <Protected checkFor={"user"} />,
         children: [
           {
             path: "",
             element: (
               <Suspense fallback={<h1>Loading......</h1>}>
-                <Dashboard />
+                <UserDashboard />
+              </Suspense>
+            ),
+          },
+
+          {
+            path: "/userDashboard/profile",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <UserDashboard>
+                  <Profile />
+                </UserDashboard>
+              </Suspense>
+            ),
+          },
+          {
+            path: "/userDashboard/orders",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <UserDashboard>
+                  <Orders />
+                </UserDashboard>
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "/adminDashboard",
+        element: <Protected checkFor={"admin"} />,
+        children: [
+          {
+            path: "",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <AdminDashboard />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/adminDashboard/createCategory",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <AdminDashboard>
+                  <CreateCategory />
+                </AdminDashboard>
+              </Suspense>
+            ),
+          },
+          {
+            path: "/adminDashboard/createProduct",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <AdminDashboard>
+                  <CreateProduct />
+                </AdminDashboard>
+              </Suspense>
+            ),
+          },
+          {
+            path: "/adminDashboard/users",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <AdminDashboard>
+                  <Users />
+                </AdminDashboard>
               </Suspense>
             ),
           },

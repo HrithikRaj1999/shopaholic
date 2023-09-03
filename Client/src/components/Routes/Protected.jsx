@@ -1,26 +1,43 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../context/auth";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import axios from "axios";
 import RedirectingPage from "../RedirectingPage";
 
-export const ProtectedRoute = () => {
-  const [ok, setOk] = useState(false);
-  const [auth, setAuth] = useAuth();
+// note admin can access user and admin both dashboards
+
+export const Protected = ({ checkFor }) => {
+  const [permitted, setPermitted] = useState(false);
+  const [auth] = useAuth();
+  const [path, setPath] = useState();
   const authCheck = async () => {
-    const res = await axios.get(
-      `${process.env.REACT_APP_API}/api/v1/auth/user-auth`
-    );
-    if (res.data.ok) {
-      setOk(true);
+    console.log("useEffect runed and auto check");
+    if (checkFor === "admin") {
+      try {
+        await axios.get(`${process.env.REACT_APP_API}/api/v1/auth/admin-auth`);
+        setPermitted(true);
+      } catch (error) {
+        console.log("not admin");
+        setPath("/"); //redirect to home
+        setPermitted(false);
+      }
     } else {
-      setOk(false);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/auth/user-auth`
+      );
+      if (res.data.ok) {
+        setPermitted(true);
+      } else {
+        setPath("/login"); //redirect to home
+        setPermitted(false);
+      }
     }
   };
 
-  useEffect(() => {
-    if (auth?.token) authCheck();
-  }, [auth?.token]);
-
-  return ok ? <Outlet /> : <RedirectingPage />;
+  useMemo(() => {
+    if (auth.user && auth?.token) {
+      authCheck();
+    }
+  }, [auth]);
+  return permitted ? <Outlet /> : <RedirectingPage path={path} />;
 };

@@ -7,6 +7,7 @@ const AuthProvider = ({ children }) => {
     user: null,
     token: "",
   });
+  console.log({ auth });
   //default axios
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
