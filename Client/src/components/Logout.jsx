@@ -12,13 +12,13 @@ const Logout = (props) => {
     setAuth({ ...auth, user: null, token: "" });
     setTimeout(() => {
       navigate("/");
-    }, 2000);
+    }, 500);
   }, []);
 
   return (
     <div className=" bg-slate-200 flex h-screen justify-center items-center">
       <p className="text-center text-3xl font-medium p-2">
-        You have been logged Out, Redirecting to homepage...
+        You have been logged Out.
       </p>
       <Spinner />
     </div>

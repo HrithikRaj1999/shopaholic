@@ -30,7 +30,7 @@ const RedirectingPage = ({ path = "/login" }) => {
       <p className="text-center text-3xl font-medium p-2">
         {auth.user
           ? `Not Authorized, you don't have admin Rights. Redirecting to home page in ${count} seconds.`
-          : "Kindly, log in to access userDashboard"}
+          : "Kindly, log in to access user-dashboard"}
       </p>
     );
   }, [count, auth.user]);

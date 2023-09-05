@@ -115,7 +115,7 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "/userDashboard",
+        path: "/user-dashboard",
         element: <Protected checkFor={"user"} />,
         children: [
           {
@@ -128,7 +128,7 @@ const appRouter = createBrowserRouter([
           },
 
           {
-            path: "/userDashboard/profile",
+            path: "/user-dashboard/profile",
             element: (
               <Suspense fallback={<h1>Loading......</h1>}>
                 <UserDashboard>
@@ -138,7 +138,7 @@ const appRouter = createBrowserRouter([
             ),
           },
           {
-            path: "/userDashboard/orders",
+            path: "/user-dashboard/orders",
             element: (
               <Suspense fallback={<h1>Loading......</h1>}>
                 <UserDashboard>
@@ -150,7 +150,7 @@ const appRouter = createBrowserRouter([
         ],
       },
       {
-        path: "/adminDashboard",
+        path: "/admin-dashboard",
         element: <Protected checkFor={"admin"} />,
         children: [
           {
@@ -162,7 +162,7 @@ const appRouter = createBrowserRouter([
             ),
           },
           {
-            path: "/adminDashboard/createCategory",
+            path: "/admin-dashboard/createCategory",
             element: (
               <Suspense fallback={<h1>Loading......</h1>}>
                 <AdminDashboard>
@@ -172,7 +172,7 @@ const appRouter = createBrowserRouter([
             ),
           },
           {
-            path: "/adminDashboard/createProduct",
+            path: "/admin-dashboard/createProduct",
             element: (
               <Suspense fallback={<h1>Loading......</h1>}>
                 <AdminDashboard>
@@ -182,7 +182,7 @@ const appRouter = createBrowserRouter([
             ),
           },
           {
-            path: "/adminDashboard/users",
+            path: "/admin-dashboard/users",
             element: (
               <Suspense fallback={<h1>Loading......</h1>}>
                 <AdminDashboard>

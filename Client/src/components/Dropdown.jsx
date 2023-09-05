@@ -16,7 +16,9 @@ const Dropdown = ({ toggleDropdown }) => {
         <Link
           className="text-white  block px-4 py-2 hover:underline"
           to={
-            auth?.user?.role === "admin" ? "/adminDashboard" : "/userDashboard"
+            auth?.user?.role === "admin"
+              ? "/admin-dashboard"
+              : "/user-dashboard"
           }
           onClick={toggleDropdown}
         >

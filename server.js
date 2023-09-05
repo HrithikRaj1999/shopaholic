@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js"
+import categoryRoutes from "./routes/categoryRoutes.js"
 import cors from 'cors';
 //rest object
 const app = express();
@@ -21,7 +22,7 @@ connectDB()
 //routes 
 app.use('/api/v1/auth', authRoutes)
 
-
+app.use('/api/v1/category', categoryRoutes)
 
 
 
