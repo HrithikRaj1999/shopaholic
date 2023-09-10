@@ -32,7 +32,8 @@ const productSchema = new mongoose.Schema(
             contentType: String,
         },
         shipping: {
-            type: Boolean,
+            type: String,
+            required: true,
         },
     },
     { timestamps: true }  //This will add created by in document

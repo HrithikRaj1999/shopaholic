@@ -4,13 +4,16 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
 import { AuthProvider, useAuth } from "./context/auth";
 import { Protected } from "./components/Routes/Protected";
+import { CategoriesProvider } from "./context/categoriesContext";
 
 const App = () => {
   return (
     <AuthProvider>
-      <Layout>
-        <Outlet />
-      </Layout>
+      <CategoriesProvider>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </CategoriesProvider>
     </AuthProvider>
   );
 };
@@ -30,12 +33,14 @@ const AdminDashboard = lazy(() =>
   import("./components/Dashboard/AdminDashboard")
 );
 const Protected = lazy(() => import("./components/Routes/Protected"));
-const CreateCategory = lazy(() => import("./components/Admin/createCategory"));
-const CreateProduct = lazy(() => import("./components/Admin/createProduct"));
+const CreateCategory = lazy(() => import("./components/Admin/CreateCategory"));
+const CreateProduct = lazy(() => import("./components/Admin/CreateProduct"));
 const Users = lazy(() => import("./components/Admin/Users"));
 
+const Products = lazy(() => import("./components/Admin/Products"));
 const Profile = lazy(() => import("./components/User/Profile"));
 const Orders = lazy(() => import("./components/User/Orders"));
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -187,6 +192,16 @@ const appRouter = createBrowserRouter([
               <Suspense fallback={<h1>Loading......</h1>}>
                 <AdminDashboard>
                   <Users />
+                </AdminDashboard>
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin-dashboard/products",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <AdminDashboard>
+                  <Products />
                 </AdminDashboard>
               </Suspense>
             ),

@@ -45,6 +45,19 @@ const AdminMenu = () => {
           </tr>
           <tr
             className={
+              pathname === "/admin-dashboard/products"
+                ? "bg-blue-300 font-arial text-xl"
+                : "bg-white hover:bg-gray-200"
+            }
+          >
+            <td className="border py-4">
+              <Link to="/admin-dashboard/products">
+                <div className="cursor-pointer">Products</div>
+              </Link>
+            </td>
+          </tr>
+          <tr
+            className={
               pathname === "/admin-dashboard/Users"
                 ? "bg-blue-300 font-arial text-xl"
                 : "bg-white hover:bg-gray-200"
