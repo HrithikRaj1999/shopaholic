@@ -5,14 +5,16 @@ import Layout from "./components/Layout";
 import { AuthProvider, useAuth } from "./context/auth";
 import { Protected } from "./components/Routes/Protected";
 import { CategoriesProvider } from "./context/categoriesContext";
-
+import { ProductProvider } from "./context/ProductContext";
 const App = () => {
   return (
     <AuthProvider>
       <CategoriesProvider>
-        <Layout>
-          <Outlet />
-        </Layout>
+        <ProductProvider>
+          <Layout>
+            <Outlet />
+          </Layout>
+        </ProductProvider>
       </CategoriesProvider>
     </AuthProvider>
   );
@@ -32,6 +34,8 @@ const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
 const AdminDashboard = lazy(() =>
   import("./components/Dashboard/AdminDashboard")
 );
+const DeleteProduct = lazy(() => import("./components/Admin/DeleteProduct"));
+const UpdateProduct = lazy(() => import("./components/Admin/UpdateProduct"));
 const Protected = lazy(() => import("./components/Routes/Protected"));
 const CreateCategory = lazy(() => import("./components/Admin/CreateCategory"));
 const CreateProduct = lazy(() => import("./components/Admin/CreateProduct"));
@@ -202,6 +206,26 @@ const appRouter = createBrowserRouter([
               <Suspense fallback={<h1>Loading......</h1>}>
                 <AdminDashboard>
                   <Products />
+                </AdminDashboard>
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin-dashboard/update-product/:slug",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <AdminDashboard>
+                  <UpdateProduct />
+                </AdminDashboard>
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin-dashboard/delete-product",
+            element: (
+              <Suspense fallback={<h1>Loading......</h1>}>
+                <AdminDashboard>
+                  <DeleteProduct />
                 </AdminDashboard>
               </Suspense>
             ),

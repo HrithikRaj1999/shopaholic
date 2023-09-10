@@ -1,13 +1,12 @@
 import { Button, Modal } from "antd";
 
 import React from "react";
-import { useCategory } from "../../context/categoriesContext";
 
 const DeleteConfirmation = ({
   showDeleteModal = false,
-  handleDelete,
-  setShowDeleteModal,
-  setSelected,
+  handleDelete = () => {},
+  setShowDeleteModal = false,
+  setSelected = () => {},
 }) => {
   const handleCancel = () => {
     setShowDeleteModal(false);

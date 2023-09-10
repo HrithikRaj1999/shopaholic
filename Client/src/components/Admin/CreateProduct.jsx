@@ -4,16 +4,18 @@ import { useCategory } from "../../context/categoriesContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useProduct } from "../../context/ProductContext";
 
 const CreateProduct = () => {
   const [categories] = useCategory();
+  const [product, setProduct] = useProduct();
   const [selectedPhoto, setSelectedPhoto] = useState(null); // Corrected state variable name
   const navigate = useNavigate();
   const handleFileChange = (e) => {
     setSelectedPhoto(e.target.files[0]); // Corrected state variable name
   };
 
-  console.log(categories, "In product");
+  console.log(categories, "In create Product product");
 
   const {
     register,
@@ -41,7 +43,8 @@ const CreateProduct = () => {
           },
         }
       );
-
+      console.log(data);
+      setProduct([...product, data]);
       toast.success("Product Created Successfully");
       navigate("/admin-dashboard/products");
     } catch (error) {
