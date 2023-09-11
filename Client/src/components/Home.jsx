@@ -1,15 +1,133 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/auth";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useCategory } from "../context/categoriesContext";
+import { useProduct } from "../context/ProductContext";
+import { Card } from "antd";
+import { Prices } from "./Prices";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Home = () => {
-  const [auth, setAuth] = useAuth();
-  const location = useLocation();
-  console.log(location);
+  const [categories] = useCategory();
+  const [products, setProducts] = useProduct();
+  const [showProducts, setShowProducts] = useState(products);
+  const [checked, setChecked] = useState([]);
+  const [radioOption, setRadioOption] = useState([]);
+
+  const handleFilter = (isChecked, id) => {
+    let allCheckId = [...checked];
+    if (isChecked) {
+      allCheckId.push(id);
+    } else {
+      allCheckId = allCheckId.filter((id) => id !== id);
+    }
+    setChecked(allCheckId);
+  };
+
+  const fetchFilterData = async () => {
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/product/product-filters`,
+        { checked, radioOption }
+      );
+      setShowProducts(res.data.products);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (checked?.length > 0 || radioOption?.length > 0) fetchFilterData();
+    else setShowProducts(products);
+  }, [checked, radioOption]);
   return (
-    <div>
-      <div>Home</div>
-      <div>{JSON.stringify(auth, null, 2)}</div>
+    <div className="flex  m-2">
+      <div className="w-3/12 p-3 m-4 border-l-gray-700y flex flex-col justify-start">
+        <div className="m-4">
+          <h1>Filter By Categories </h1>
+          {categories?.map((i) => (
+            <div
+              key={i?._id}
+              className="mx-10 mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]"
+            >
+              <input
+                className="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-black checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-black checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+                type="checkbox"
+                onChange={(e) => {
+                  handleFilter(e.target.checked, i?._id);
+                }}
+                value={i?._id}
+                id={i?.name}
+                checked={checked.includes(i?._id)}
+              />
+              <label
+                className="inline-block pl-[0.15rem] hover:cursor-pointer"
+                for="checkboxDefault"
+              >
+                {i.name}
+              </label>
+            </div>
+          ))}
+        </div>
+        <h1>Filter By Price</h1>
+        {Prices?.map((i) => (
+          <div
+            key={i._id}
+            className="mx-10 mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]"
+          >
+            <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
+              <input
+                class="relative float-left -ml-[1.5rem] mr-1 mt-0.5 h-5 w-5 appearance-none rounded-full border-2 border-solid border-black before:pointer-events-none before:absolute before:h-4 before:w-4 before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] after:absolute after:z-[1] after:block after:h-4 after:w-4 after:rounded-full after:content-[''] checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:border-neutral-600 dark:checked:border-primary dark:checked:after:border-primary dark:checked:after:bg-blue-800 dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:border-primary dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+                type="radio"
+                name="flexRadioDefault"
+                id="radioDefault02"
+                value={i?.array}
+                checked={i.array === radioOption}
+                onClick={(e) => {
+                  setRadioOption(i?.array);
+                }}
+              />
+              <label
+                class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
+                for="radioDefault02"
+              >
+                {i.name}
+              </label>
+            </div>
+          </div>
+        ))}
+        <button
+          className="bg-blue-500 rounded-full p-2 m-2 "
+          onClick={() => {
+            setRadioOption([]); // Clear the radio options
+            setChecked([]);
+          }}
+        >
+          Clear Filters{" "}
+        </button>
+      </div>
+      <div>
+        <div className="my-6 flex justify-center">
+          <input
+            className="bg-stone-100 mx-4 rounded-2xl py-2 px-3 w-[200px] border-s-black-50"
+            placeholder="Search"
+          />
+          <button className="bg-blue-300 rounded-2xl mx-3 p-2 ">Search</button>
+        </div>
+        <div className="flex flex-wrap justify-center w-9/12 m-6 ">
+          {showProducts?.map((item) => (
+            <Card className=" rounded-3xl shadow-2xl m-10 bg-grey-100 hover:bg-stone-500">
+              <img
+                className="w-[200px] h-[200px] rounded-3xl"
+                src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${item?._id}`}
+              />
+              <p>{item?.name}</p>
+              <p>{item?.price}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

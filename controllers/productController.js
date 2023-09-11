@@ -182,3 +182,23 @@ export const updateProductController = async (req, res) => {
     }
 };
 
+export const productFiltersController = async (req, res) => {
+    try {
+        const { checked, radioOption } = req.body;
+        let args = {};
+        if (checked?.length > 0) args.category = checked;
+        if (radioOption?.length) args.price = { $gte: radioOption[0], $lte: radioOption[1] };
+        const products = await productModel.find(args);
+        res.status(200).send({
+            success: true,
+            products,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success: false,
+            message: "Error WHile Filtering Products",
+            error,
+        });
+    }
+};

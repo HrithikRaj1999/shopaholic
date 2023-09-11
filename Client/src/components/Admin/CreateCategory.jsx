@@ -12,12 +12,11 @@ const CreateCategory = () => {
   const [selected, setSelected] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  console.log({ categories, selected, showModal });
 
   const handleEdit = async (name) => {
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_API}/api/v1/category/update-category/${selected._id}`,
+        `${process.env.REACT_APP_API}/api/v1/category/update-category/${selected?._id}`,
         { name }
       );
       const updatedArray = categories.map((item) => {
@@ -36,7 +35,7 @@ const CreateCategory = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/category/delete-category/${selected._id}`
+        `${process.env.REACT_APP_API}/api/v1/category/delete-category/${selected?._id}`
       );
       const filteredArray = categories.filter(
         (item) => item._id !== selected._id
@@ -50,19 +49,6 @@ const CreateCategory = () => {
       setShowDeleteModal(false);
     }
   };
-  const getAllCategories = async () => {
-    const res = await axios.get(
-      `${process.env.REACT_APP_API}/api/v1/category/get-category`
-    );
-    setCategories(res.data.category);
-  };
-  useEffect(() => {
-    try {
-      getAllCategories();
-    } catch (error) {
-      toast.error(error);
-    }
-  }, []);
   return (
     <div className="flex flex-col justify-centre p-10 mt-2 bg-gray-300 rounded-3xl shadow-2xl ">
       <h1 className=" text-3xl  text-center font-medium">Manage Categories</h1>
