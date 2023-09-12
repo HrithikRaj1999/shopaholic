@@ -7,6 +7,7 @@ import { Card } from "antd";
 import { Prices } from "./Prices";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Spinner from "./Spinner";
 
 const Home = () => {
   const [categories] = useCategory();
@@ -14,6 +15,9 @@ const Home = () => {
   const [showProducts, setShowProducts] = useState(products);
   const [checked, setChecked] = useState([]);
   const [radioOption, setRadioOption] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const handleFilter = (isChecked, id) => {
     let allCheckId = [...checked];
@@ -24,22 +28,72 @@ const Home = () => {
     }
     setChecked(allCheckId);
   };
-
+  const loadMore = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+      );
+      setLoading(false);
+      setShowProducts([...showProducts, ...data?.products]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getTotal = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/product-count`
+      );
+      setLoading(false);
+      setTotal(data?.total);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const fetchFilterData = async () => {
     try {
-      const res = await axios.post(
+      setLoading(true);
+      const { data } = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/product/product-filters`,
         { checked, radioOption }
       );
-      setShowProducts(res.data.products);
+      setLoading(false);
+
+      const dataId = data.products?.map((i) => i?._id);
+      const updatedProducts = showProducts.filter((i) =>
+        dataId.includes(i?._id)
+      );
+      setShowProducts([...updatedProducts]);
     } catch (error) {
       toast.error(error);
     }
   };
+  const getAllProducts = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+      );
+      console.log(data);
+      setShowProducts(data?.products);
+      setLoading(false);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (page === 1) return;
+    loadMore();
+  }, [page]);
+
+  useEffect(() => {
+    getTotal();
+  }, []);
 
   useEffect(() => {
     if (checked?.length > 0 || radioOption?.length > 0) fetchFilterData();
-    else setShowProducts(products);
+    else getAllProducts();
   }, [checked, radioOption]);
   return (
     <div className="flex  m-2">
@@ -102,6 +156,7 @@ const Home = () => {
           onClick={() => {
             setRadioOption([]); // Clear the radio options
             setChecked([]);
+            getAllProducts();
           }}
         >
           Clear Filters{" "}
@@ -126,6 +181,17 @@ const Home = () => {
               <p>{item?.price}</p>
             </Card>
           ))}
+        </div>
+        <div>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={(e) => {
+              e.preventDefault();
+              setPage(page + 1);
+            }}
+          >
+            {loading ? <Spinner /> : "Load More"}
+          </button>
         </div>
       </div>
     </div>
