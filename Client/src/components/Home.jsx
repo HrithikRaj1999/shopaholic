@@ -163,23 +163,18 @@ const Home = () => {
         </button>
       </div>
       <div>
-        <div className="my-6 flex justify-center">
-          <input
-            className="bg-stone-100 mx-4 rounded-2xl py-2 px-3 w-[200px] border-s-black-50"
-            placeholder="Search"
-          />
-          <button className="bg-blue-300 rounded-2xl mx-3 p-2 ">Search</button>
-        </div>
         <div className="flex flex-wrap justify-center w-9/12 m-6 ">
           {showProducts?.map((item) => (
-            <Card className=" rounded-3xl shadow-2xl m-10 bg-grey-100 hover:bg-stone-500">
-              <img
-                className="w-[200px] h-[200px] rounded-3xl"
-                src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${item?._id}`}
-              />
-              <p>{item?.name}</p>
-              <p>{item?.price}</p>
-            </Card>
+            <Link to={`/product-details/${item.slug}`}>
+              <Card className=" rounded-3xl shadow-2xl m-10 bg-grey-100 hover:bg-stone-500">
+                <img
+                  className="w-[200px] h-[200px] rounded-3xl"
+                  src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${item?._id}`}
+                />
+                <p>{item?.name}</p>
+                <p>{item?.price}</p>
+              </Card>
+            </Link>
           ))}
         </div>
         <div>

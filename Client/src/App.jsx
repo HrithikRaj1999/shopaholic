@@ -6,14 +6,20 @@ import { AuthProvider, useAuth } from "./context/auth";
 import { Protected } from "./components/Routes/Protected";
 import { CategoriesProvider } from "./context/categoriesContext";
 import { ProductProvider } from "./context/ProductContext";
+import { SearchProvider } from "./context/searchContext";
+import Spinner from "./components/Spinner";
+import SearchItems from "./components/SearchItems";
+
 const App = () => {
   return (
     <AuthProvider>
       <CategoriesProvider>
         <ProductProvider>
-          <Layout>
-            <Outlet />
-          </Layout>
+          <SearchProvider>
+            <Layout>
+              <Outlet />
+            </Layout>
+          </SearchProvider>
         </ProductProvider>
       </CategoriesProvider>
     </AuthProvider>
@@ -44,7 +50,7 @@ const Users = lazy(() => import("./components/Admin/Users"));
 const Products = lazy(() => import("./components/Admin/Products"));
 const Profile = lazy(() => import("./components/User/Profile"));
 const Orders = lazy(() => import("./components/User/Orders"));
-
+const ProductDetails = lazy(() => import("./components/ProductDetails"));
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -54,15 +60,23 @@ const appRouter = createBrowserRouter([
       {
         path: "/",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <Home />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/search",
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <SearchItems />
           </Suspense>
         ),
       },
       {
         path: "/about",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <About />
           </Suspense>
         ),
@@ -70,7 +84,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/contact",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <Contact />
           </Suspense>
         ),
@@ -78,7 +92,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/cart",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <Cart />
           </Suspense>
         ),
@@ -86,7 +100,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/category",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <Category />
           </Suspense>
         ),
@@ -94,7 +108,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/register",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <Register />
           </Suspense>
         ),
@@ -102,7 +116,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/login",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <Login />
           </Suspense>
         ),
@@ -110,15 +124,23 @@ const appRouter = createBrowserRouter([
       {
         path: "/logout",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <Logout />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/product-details/:slug",
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <ProductDetails />
           </Suspense>
         ),
       },
       {
         path: "/forgot-password",
         element: (
-          <Suspense fallback={<h1>Loading......</h1>}>
+          <Suspense fallback={<Spinner />}>
             <ForgotPassword />
           </Suspense>
         ),
@@ -130,7 +152,7 @@ const appRouter = createBrowserRouter([
           {
             path: "",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <UserDashboard />
               </Suspense>
             ),
@@ -139,7 +161,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/user-dashboard/profile",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <UserDashboard>
                   <Profile />
                 </UserDashboard>
@@ -149,7 +171,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/user-dashboard/orders",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <UserDashboard>
                   <Orders />
                 </UserDashboard>
@@ -165,7 +187,7 @@ const appRouter = createBrowserRouter([
           {
             path: "",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <AdminDashboard />
               </Suspense>
             ),
@@ -173,7 +195,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin-dashboard/createCategory",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <AdminDashboard>
                   <CreateCategory />
                 </AdminDashboard>
@@ -183,7 +205,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin-dashboard/createProduct",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <AdminDashboard>
                   <CreateProduct />
                 </AdminDashboard>
@@ -193,7 +215,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin-dashboard/users",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <AdminDashboard>
                   <Users />
                 </AdminDashboard>
@@ -203,7 +225,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin-dashboard/products",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <AdminDashboard>
                   <Products />
                 </AdminDashboard>
@@ -213,7 +235,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin-dashboard/update-product/:slug",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <AdminDashboard>
                   <UpdateProduct />
                 </AdminDashboard>
@@ -223,7 +245,7 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin-dashboard/delete-product",
             element: (
-              <Suspense fallback={<h1>Loading......</h1>}>
+              <Suspense fallback={<Spinner />}>
                 <AdminDashboard>
                   <DeleteProduct />
                 </AdminDashboard>

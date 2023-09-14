@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 const ProductContext = createContext();
 const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([{}]);
+  console.log({ "product in context": products });
   console.log("products context rendered", products);
   const getAllProducts = async () => {
     try {

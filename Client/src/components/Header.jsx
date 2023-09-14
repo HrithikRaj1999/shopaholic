@@ -3,6 +3,7 @@ import { GiShoppingBag } from "react-icons/gi";
 import { useAuth } from "../context/auth";
 import { useState } from "react";
 import Dropdown from "./Dropdown";
+import Searchbox from "./utils/Searchbox";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   //assigning location variable
@@ -29,6 +30,15 @@ const Header = () => {
       </div>
       <div className="flex items-center text-white ">
         <ul className="flex text-lg ">
+          <li
+            className={
+              loc === "/search"
+                ? "active p-2 m-2 w-30 underline hover:text-blue-300 "
+                : "p-2 m-2 w-30  hover:text-blue-300  "
+            }
+          >
+            <Searchbox />
+          </li>
           <li
             className={
               loc === ""
