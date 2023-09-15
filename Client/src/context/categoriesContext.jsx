@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const CategoriesContext = createContext();
 const CategoriesProvider = ({ children }) => {
   const [categories, setCategories] = useState([{}]);
-
+  console.log({ categories });
   const getAllCategories = async () => {
     const res = await axios.get(
       `${process.env.REACT_APP_API}/api/v1/category/get-category`
