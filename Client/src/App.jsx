@@ -10,6 +10,7 @@ import { SearchProvider } from "./context/searchContext";
 import Spinner from "./components/Spinner";
 import SearchItems from "./components/SearchItems";
 import { CartProvider } from "./context/cartContext";
+import AllOrders from "./components/Admin/AllOrders";
 
 const App = () => {
   return (
@@ -49,7 +50,7 @@ const Protected = lazy(() => import("./components/Routes/Protected"));
 const CreateCategory = lazy(() => import("./components/Admin/CreateCategory"));
 const CreateProduct = lazy(() => import("./components/Admin/CreateProduct"));
 const Users = lazy(() => import("./components/Admin/Users"));
-
+const AllOrders = lazy(() => import("./components/Admin/AllOrders"));
 const Products = lazy(() => import("./components/Admin/Products"));
 const Profile = lazy(() => import("./components/User/Profile"));
 const Orders = lazy(() => import("./components/User/Orders"));
@@ -251,6 +252,16 @@ const appRouter = createBrowserRouter([
               <Suspense fallback={<Spinner />}>
                 <AdminDashboard>
                   <DeleteProduct />
+                </AdminDashboard>
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin-dashboard/all-orders",
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <AdminDashboard>
+                  <AllOrders />
                 </AdminDashboard>
               </Suspense>
             ),

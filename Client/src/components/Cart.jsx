@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useCart } from "../context/cartContext";
 import { Card } from "antd";
 
+import BraintreeDropIn from "./BraintreDropIn";
 function Cart() {
   const [cartItem, setCartItem] = useCart();
   const [totalPrice, setTotalPrice] = useState(0);
   const [productCount, setProductsCount] = useState(new Map());
   const [showUniquePro, setShowUniqueProducts] = useState([]);
-
+  const [showBraintreeDropIn, setShowBraintreeDropIn] = useState(false);
   console.log({ productCount });
   const handleRemoveFromCart = (itemID) => {
     const index = cartItem?.findIndex((obj) => obj?._id === itemID);
@@ -88,6 +89,18 @@ function Cart() {
         <h1 className="text-2xl font-bold">
           Total: ₹{totalPrice?.toLocaleString("en-IN")}
         </h1>
+        <button
+          className="bg-blue-500 w-[150px] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => setShowBraintreeDropIn(true)}
+        >
+          Make Payment
+        </button>
+        <BraintreeDropIn
+          show={showBraintreeDropIn}
+          onPaymentCompleted={() => {
+            setShowBraintreeDropIn(false);
+          }}
+        />
       </div>
     </div>
   );

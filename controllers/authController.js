@@ -1,4 +1,5 @@
 import { comparePassword, hashPassword } from "../helpers/authHelper.js"
+import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js"
 import JWT from "jsonwebtoken"
 
@@ -156,3 +157,69 @@ export const forgotPasswordController = async (req, res) => {
 export const testController = async (req, res) => {
     res.status(200).send({ message: "this is a protected Route user can only access when they have JWT token or signed in" })
 }
+
+export const getOrdersController = async (req, res) => {
+    try {
+        const orders = await orderModel
+            .find({ buyer: req.user._id })
+            .populate("products", "-photo")
+            .populate("buyer", "name");
+        res.json(orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error WHile Geting Orders",
+            error,
+        });
+    }
+};
+//orders
+export const getAllOrdersController = async (req, res) => {
+    try {
+        const orders = await orderModel
+            .find({})
+            .populate("products", "-photo")
+            .populate("buyer", "name")
+            .sort({ createdAt: "-1" });
+        res.json(orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error WHile Geting Orders",
+            error,
+        });
+    }
+};
+
+//order status
+export const orderStatusController = async (req, res) => {
+    try {
+        const idStatMap = req.body.idStatMap;
+        // Create an array to store the bulk write operations
+        const bulkOps = [];
+        // Iterate over the idStatMap and add update operations to the bulkOps array
+        for (const orderId in idStatMap) {
+            const status = idStatMap[orderId];
+            bulkOps.push({
+                updateOne: {
+                    filter: { _id: orderId }, // Assuming '_id' is the MongoDB document ID field
+                    update: { $set: { status: status } },
+                },
+            });
+        }
+        console.log({ idStatMap, bulkOps })
+        // Perform the bulk write operation
+        const result = await orderModel.bulkWrite(bulkOps);
+        return res.status(200).send({ success: true, message: "Order Id Updated Successfully" })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error While Updating Orders",
+            error,
+        });
+    }
+
+};

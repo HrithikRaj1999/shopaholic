@@ -17,15 +17,16 @@ function Category() {
     <div className="flex flex-wrap">
       <div className="w-3/12">
         <h1>Select Any Category:-</h1>
-        {categories?.map((i) => (
-          <button
-            key={i?._id}
-            className="flex flex-col bg-transparent w-[200px] m-2 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            onClick={() => handleClick(i?._id)}
-          >
-            {i?.name}
-          </button>
-        ))}
+        {categories?.length > 0 &&
+          categories?.map((i) => (
+            <button
+              key={i?._id}
+              className="flex flex-col bg-transparent w-[200px] m-2 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              onClick={() => handleClick(i?._id)}
+            >
+              {i?.name}
+            </button>
+          ))}
       </div>
       <div className="w-9/12 flex flex-wrap">
         {showProducts?.length > 0 &&
