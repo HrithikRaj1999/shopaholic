@@ -4,6 +4,7 @@ import { useAuth } from "../context/auth";
 import { useState } from "react";
 import Dropdown from "./Dropdown";
 import Searchbox from "./utils/Searchbox";
+import { useCart } from "../context/cartContext";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   //assigning location variable
@@ -14,6 +15,8 @@ const Header = () => {
   const splitLocation = pathname.split("/");
   const loc = splitLocation[1];
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [cartItem] = useCart();
+
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
@@ -67,7 +70,7 @@ const Header = () => {
               }
               to="/cart"
             >
-              <span>Cart (0)</span>
+              <span>Cart ({cartItem?.length})</span>
             </Link>
           </li>
           {auth.user === null ? (
@@ -97,7 +100,7 @@ const Header = () => {
                 onClick={toggleDropdown}
                 className="cursor-pointer text-xl font-semibold p-2 m-2 w-30  hover:text-blue-300"
               >
-                {auth.user.name} {!isDropdownVisible ? "⬇" : "⬆"}
+                {auth?.user?.name} {!isDropdownVisible ? "⬇" : "⬆"}
               </p>
             )}
             {isDropdownVisible ? (

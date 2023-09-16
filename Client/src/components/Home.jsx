@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/auth";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useCategory } from "../context/categoriesContext";
 import { useProduct } from "../context/ProductContext";
 import { Card } from "antd";
@@ -8,6 +7,7 @@ import { Prices } from "./Prices";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Spinner from "./Spinner";
+import { useCart } from "../context/cartContext";
 
 const Home = () => {
   const [categories] = useCategory();
@@ -15,6 +15,7 @@ const Home = () => {
   const [showProducts, setShowProducts] = useState(products);
   const [checked, setChecked] = useState([]);
   const [radioOption, setRadioOption] = useState([]);
+  const [cartItem, setCartItem] = useCart();
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,11 @@ const Home = () => {
       allCheckId = allCheckId.filter((id) => id !== id);
     }
     setChecked(allCheckId);
+  };
+  const handleAddToCart = (product) => {
+    // localStorage.setItem(cartItem);
+    setCartItem([...cartItem, product]);
+    localStorage.setItem("cart", JSON.stringify([...cartItem, product]));
   };
   const loadMore = async () => {
     try {
@@ -165,22 +171,24 @@ const Home = () => {
       <div>
         <div className="flex flex-wrap justify-center w-9/12 m-6 ">
           {showProducts?.map((item) => (
-            <Link to={`/product-details/${item.slug}`}>
-              <Card className=" flex justify-center w-[300px] h-[350px] rounded-3xl shadow-sm m-10 bg-grey-100 hover:shadow-2xl">
-                <img
-                  className="w-[200px] h-[200px] rounded-3xl "
-                  src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${item?._id}`}
-                />
-                <p>{item?.name}</p>
-                <p>{item?.price}</p>
-                <button
-                  className=" bg-transparent flex  hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                  onClick={() => handleClick(i?._id)}
-                >
-                  Add To Cart
-                </button>
-              </Card>
-            </Link>
+            <div className="flex flex-col justify-center w-[300px] h-[350px] rounded-3xl shadow-sm m-10 bg-grey-100 hover:shadow-2xl">
+              <Link to={`/product-details/${item.slug}`}>
+                <Card>
+                  <img
+                    className="w-[200px] h-[200px] rounded-3xl "
+                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${item?._id}`}
+                  />
+                  <p>{item?.name}</p>
+                  <p>{item?.price}</p>
+                </Card>
+              </Link>
+              <button
+                className=" bg-transparent flex  w-[100px] m-6 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-1 border border-blue-500 hover:border-transparent rounded"
+                onClick={() => handleAddToCart(item)}
+              >
+                Add To Cart
+              </button>
+            </div>
           ))}
         </div>
         <div>

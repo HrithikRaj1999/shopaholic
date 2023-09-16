@@ -9,17 +9,20 @@ import { ProductProvider } from "./context/ProductContext";
 import { SearchProvider } from "./context/searchContext";
 import Spinner from "./components/Spinner";
 import SearchItems from "./components/SearchItems";
+import { CartProvider } from "./context/cartContext";
 
 const App = () => {
   return (
     <AuthProvider>
       <CategoriesProvider>
         <ProductProvider>
-          <SearchProvider>
-            <Layout>
-              <Outlet />
-            </Layout>
-          </SearchProvider>
+          <CartProvider>
+            <SearchProvider>
+              <Layout>
+                <Outlet />
+              </Layout>
+            </SearchProvider>
+          </CartProvider>
         </ProductProvider>
       </CategoriesProvider>
     </AuthProvider>

@@ -31,9 +31,9 @@ function Category() {
         {showProducts?.length > 0 &&
           showProducts?.map((item) => (
             <Link to={`/product-details/${item?.slug}`}>
-              <Card className=" w-[400px] h-[400px] rounded-3xl shadow-2xl m-10 bg-grey-100 hover:bg-stone-500">
+              <Card className=" flex justify-center w-[300px] h-[350px] rounded-3xl shadow-sm m-10 bg-grey-100 hover:shadow-2xl">
                 <img
-                  className="w-[200px] h-[200px] rounded-3xl"
+                  className="w-[200px] h-[200px] rounded-3xl "
                   src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${item?._id}`}
                 />
                 <p>{item?.name}</p>

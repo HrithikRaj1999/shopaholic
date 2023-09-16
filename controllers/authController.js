@@ -1,6 +1,43 @@
 import { comparePassword, hashPassword } from "../helpers/authHelper.js"
 import userModel from "../models/userModel.js"
 import JWT from "jsonwebtoken"
+
+export const updateProfileController = async (req, res) => {
+    try {
+        const { name, email, password, phone, } = req.body;
+        if (!(name && email && password && phone)) {
+
+            return res.send({ error: "All Fields is Required" })
+        }
+        const user = await userModel.findById(req.user._id);
+        //password
+        if (password && password.length < 6) {
+            return res.json({ error: "Passsword is required and 6 character long" });
+        }
+        const hashedPassword = password ? await hashPassword(password) : undefined;
+        const updatedUser = await userModel.findByIdAndUpdate(
+            req.user._id,
+            {
+                name: name || user.name,
+                password: hashedPassword || user.password,
+                phone: phone || user.phone,
+            },
+            { new: true }
+        );
+        res.status(200).send({
+            success: true,
+            message: "Profile Updated SUccessfully",
+            updatedUser,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success: false,
+            message: "Error WHile Update profile",
+            error,
+        });
+    }
+};
 export const registerController = async (req, res) => {
     try {
         const { name, email, password, address, phone, state, country, zip, securityAnswer } = req.body
