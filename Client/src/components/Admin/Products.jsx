@@ -8,8 +8,6 @@ const Products = ({ setSelected = () => {} }) => {
   const [products, setProducts] = useProduct();
   const location = useLocation();
   const { pathname } = location;
-  console.log({ products });
-
   return (
     <div className="flex flex-wrap justify-center m-6 ">
       {products?.length > 0 &&

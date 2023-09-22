@@ -20,7 +20,6 @@ const ForgotPassword = () => {
         securityAnswer: "",
       }}
       onSubmit={async (values) => {
-        console.log(values);
         try {
           const response = await axios.post(
             `${process.env.REACT_APP_API}/api/v1/auth/forgot-password`,

@@ -8,14 +8,11 @@ const AllOrders = () => {
   const [auth, setAuth] = useAuth();
   const [idStatMap, setIdStatMap] = useState({});
   const handleSave = async () => {
-    console.log({ mapInsAvce: idStatMap });
     try {
       await axios.put(`${process.env.REACT_APP_API}/api/v1/auth/order-status`, {
         idStatMap,
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleStatusChange = (id, value) => {
@@ -26,18 +23,14 @@ const AllOrders = () => {
     orders.splice(index, 1, updatedOrder);
     setOrders([...orders]);
   };
-  console.log(orders);
   const getOrders = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/auth/all-orders`
       );
       setOrders([...data]);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
-  console.log({ idStatMap });
   const createdAtDate = orders.map((i) => new Date(i?.createdAt));
   const dateFormatOptions = {
     weekday: "long",
@@ -49,7 +42,6 @@ const AllOrders = () => {
     i?.toLocaleDateString("en-US", dateFormatOptions)
   );
 
-  console.log(orders);
   useEffect(() => {
     if (auth?.token) getOrders();
   }, [auth?.token]);

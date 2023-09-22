@@ -9,17 +9,14 @@ function Cart() {
   const [productCount, setProductsCount] = useState(new Map());
   const [showUniquePro, setShowUniqueProducts] = useState([]);
   const [showBraintreeDropIn, setShowBraintreeDropIn] = useState(false);
-  console.log({ productCount });
   const handleRemoveFromCart = (itemID) => {
     const index = cartItem?.findIndex((obj) => obj?._id === itemID);
-    console.log("removeItem", cartItem, index);
     cartItem.splice(index, 1);
     setCartItem([...cartItem]);
     localStorage.setItem("cart", JSON.stringify([...cartItem]));
   };
   useEffect(() => {
     setTotalPrice(cartItem?.reduce((acc, i) => (acc += i.price), 0));
-    console.log("useEffect runned");
     const map = new Map(); //this is for counting the dublicate products
     cartItem.length > 0 &&
       cartItem?.forEach((i) => {

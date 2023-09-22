@@ -11,13 +11,11 @@ export const Protected = ({ checkFor }) => {
   const [auth] = useAuth();
   const [path, setPath] = useState();
   const authCheck = async () => {
-    console.log("useEffect runed and auto check");
     if (checkFor === "admin") {
       try {
         await axios.get(`${process.env.REACT_APP_API}/api/v1/auth/admin-auth`);
         setPermitted(true);
       } catch (error) {
-        console.log("not admin");
         setPath("/"); //redirect to home
         setPermitted(false);
       }

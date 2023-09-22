@@ -5,7 +5,7 @@
   "source": "index.html",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build "
   },
   "dependencies": {
     "@preline/overlay": "^1.4.0",

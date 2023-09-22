@@ -42,9 +42,7 @@ const Home = () => {
       );
       setLoading(false);
       setShowProducts([...showProducts, ...data?.products]);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const getTotal = async () => {
     try {
@@ -54,9 +52,7 @@ const Home = () => {
       );
       setLoading(false);
       setTotal(data?.total);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const fetchFilterData = async () => {
     try {
@@ -82,7 +78,6 @@ const Home = () => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
       );
-      console.log(data);
       setShowProducts(data?.products);
       setLoading(false);
     } catch (error) {}

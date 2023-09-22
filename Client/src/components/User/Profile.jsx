@@ -10,7 +10,6 @@ const Profile = () => {
   const [auth, setAuth] = useAuth();
   const { name, email, phone, address, password, country, state, zip } =
     auth.user;
-  console.log({ name, email, phone, address, password, country, state, zip });
   const initialValues = {
     name,
     email,
@@ -22,8 +21,6 @@ const Profile = () => {
       initialValues={initialValues}
       enableReinitialize={true}
       onSubmit={async (values) => {
-        console.log("updated", values);
-
         try {
           const response = await axios.put(
             `${process.env.REACT_APP_API}/api/v1/auth/profile`,

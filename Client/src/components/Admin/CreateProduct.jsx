@@ -15,8 +15,6 @@ const CreateProduct = () => {
     setSelectedPhoto(e.target.files[0]); // Corrected state variable name
   };
 
-  console.log(categories, "In create Product product");
-
   const {
     register,
     handleSubmit,
@@ -33,7 +31,6 @@ const CreateProduct = () => {
       formData.append("shipping", data.shipping);
       formData.append("category", data.category);
       formData.append("photo", selectedPhoto);
-      console.log(data);
       const res = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/product/create-product`,
         formData,
@@ -43,7 +40,6 @@ const CreateProduct = () => {
           },
         }
       );
-      console.log(data);
       setProduct([...product, data]);
       toast.success("Product Created Successfully");
       navigate("/admin-dashboard/products");
@@ -51,8 +47,6 @@ const CreateProduct = () => {
       toast.error(error);
     }
   };
-
-  console.log(errors);
 
   return (
     <div className="mx-[220px] flex justify-center items-center bg-black w-6/12 rounded-[100px]">

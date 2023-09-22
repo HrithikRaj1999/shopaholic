@@ -10,7 +10,6 @@ const UpdateProduct = () => {
   const [categories] = useCategory();
   const [products, setProducts] = useProduct();
   const params = useParams();
-  console.log({ params });
   const [photo, setPhoto] = useState(null);
   const [data, setData] = useState({});
   const navigate = useNavigate();
@@ -55,7 +54,6 @@ const UpdateProduct = () => {
       formData.append("shipping", values.shipping);
       formData.append("category", values.category);
       formData.append("photo", photo);
-      console.log({ data });
       const res = await axios.put(
         `${process.env.REACT_APP_API}/api/v1/product/update-product/${data._id}`,
         formData

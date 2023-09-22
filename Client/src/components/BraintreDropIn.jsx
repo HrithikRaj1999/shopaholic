@@ -19,7 +19,6 @@ export default function BraintreeDropIn(props) {
     try {
       const { nonce } = await braintreeInstance.requestPaymentMethod();
 
-      console.log(nonce);
       const { data } = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/product/braintree/payment`,
         {
@@ -27,14 +26,11 @@ export default function BraintreeDropIn(props) {
           cartItem,
         }
       );
-      console.log("post method runn");
       localStorage.removeItem("cart");
       setCartItem([]);
       navigate("/user-dashboard/orders");
       //   toast.success("Order Placed Successfully");
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const getToken = async () => {
     try {
@@ -91,7 +87,7 @@ export default function BraintreeDropIn(props) {
         //         console.error(error);
         //       } else {
         //         const paymentMethodNonce = payload.nonce;
-        //         console.log("payment method nonce", payload.nonce);
+        //         ;
 
         //         // TODO: use the paymentMethodNonce to
         //         //  call you server and complete the payment here

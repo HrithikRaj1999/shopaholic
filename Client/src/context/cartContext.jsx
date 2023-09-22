@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext();
 const CartProvider = ({ children }) => {
   const [cartItem, setCartItem] = useState([]);
-  console.log({ cartItem });
   const getCartItems = async () => {
     const existingItems = localStorage.getItem("cart");
     setCartItem(JSON.parse(existingItems) || []);

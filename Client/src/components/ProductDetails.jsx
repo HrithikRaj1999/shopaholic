@@ -6,9 +6,7 @@ import { Card } from "antd";
 const ProductDetails = () => {
   const params = useParams();
   const slug = params?.slug;
-  console.log(slug);
   const [products, setProducts] = useProduct();
-  console.log({ products });
   const navigate = useNavigate();
   const selectedProduct = products?.find((i) => i?.slug === slug);
   const relatedProduct = products?.filter(
@@ -16,8 +14,6 @@ const ProductDetails = () => {
       i?.category?._id === selectedProduct?.category?._id &&
       i?._id !== selectedProduct?._id
   );
-  console.log({ relatedProduct, selectedProduct });
-
   //initialdetails
   //   useEffect(() => {
   //     if (params??.slug) getProduct();

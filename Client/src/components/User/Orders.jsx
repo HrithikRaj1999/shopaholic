@@ -10,9 +10,7 @@ const Orders = () => {
         `${process.env.REACT_APP_API}/api/v1/auth/orders`
       );
       setOrders([...data]);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   // {orders?.length>0 && orders?.map(item=>
   // <div>
@@ -30,7 +28,6 @@ const Orders = () => {
     i?.toLocaleDateString("en-US", dateFormatOptions)
   );
 
-  console.log(orders);
   useEffect(() => {
     if (auth?.token) getOrders();
   }, [auth?.token]);

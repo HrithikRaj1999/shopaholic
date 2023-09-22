@@ -8,10 +8,8 @@ import { useProduct } from "../../context/ProductContext.jsx";
 const DeleteProduct = () => {
   const [selected, setSelected] = useState(null);
   const [products, setProducts] = useProduct();
-  console.log(selected);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const handleDelete = async () => {
-    console.log("handle Delete");
     try {
       await axios.delete(
         `${process.env.REACT_APP_API}/api/v1/product/delete-product/${selected}`

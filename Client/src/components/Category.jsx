@@ -12,7 +12,6 @@ function Category() {
     const showProducts = products?.filter((i) => i?.category?._id === id);
     setShowProduct([...showProducts]);
   };
-  console.log({ showProducts, categories, products });
   return (
     <div className="flex flex-wrap">
       <div className="w-3/12">
